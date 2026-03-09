@@ -69,7 +69,7 @@ const Home: React.FC = () => {
             <form className="relative group" onSubmit={handleSearch}>
               <input 
                 type="text" 
-                placeholder="ابحث عن كتاب، تركيب أكاديمي، أو مصطلح لساني..." 
+                placeholder="ابحث عن كتاب، أو تركيب أكاديمي، أو مصطلح لساني..." 
                 className="w-full px-10 py-8 md:py-10 bg-white border-2 border-slate-100 rounded-[3rem] text-xl md:text-2xl focus:outline-none focus:border-blue-500/30 focus:ring-4 focus:ring-blue-500/5 transition-all shadow-2xl group-hover:shadow-blue-500/10 text-right pr-20 academic-font"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
