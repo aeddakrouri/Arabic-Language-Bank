@@ -11,19 +11,14 @@ export const handler = async (event) => {
   try {
     const apiKey = process.env.GEMINI_API_KEY;
     
-    let prompt = "";
-    try {
-      const body = JSON.parse(event.body || "{}");
-      prompt = body.prompt || body.text || (typeof body === 'string' ? body : "");
-    } catch (e) {
-      prompt = event.body || "";
-    }
+    // التحقق من وجود المفتاح في الـ Log عشان نقطع الشك باليقين
+    if (!apiKey) throw new Error("API KEY IS MISSING IN NETLIFY SETTINGS");
 
-    // تغيير بسيط في النص لإجبار نيتليفاي على التحديث
-    if (!prompt) return { statusCode: 400, headers, body: JSON.stringify({ error: "Please provide a valid text" }) };
+    const body = JSON.parse(event.body || "{}");
+    const prompt = body.prompt || body.text || "مرحبا";
 
-    // العودة للموديل الأحدث بما أن المفتاح جديد
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // ده الرابط النهائي والأكثر استقراراً في العالم حالياً
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -48,7 +43,7 @@ export const handler = async (event) => {
     };
 
   } catch (error: any) {
-    console.error("FORCED DEPLOY ERROR:", error.message);
+    console.error("THE FINAL ERROR:", error.message);
     return {
       statusCode: 500,
       headers,
