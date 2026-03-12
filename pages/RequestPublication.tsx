@@ -57,13 +57,13 @@ const RequestPublication: React.FC = () => {
           </div>
           <h2 className="text-3xl font-black text-slate-900 mb-4 academic-font">تم استلام طلبك بنجاح</h2>
           <p className="text-slate-500 text-lg leading-relaxed academic-font mb-10">
-            شكراً لثقتك ببنك اللغة العربية. سيقوم المجلس العلمي بمراجعة طلبك والتواصل معك عبر البريد الإلكتروني خلال 5 أيام عمل.
+            شكرًا لثقتك ببنك اللغة العربية. سيقوم المجلس العلمي بمراجعة طلبك والتواصل معك عبر البريد الإلكتروني خلال 5 أيام عمل.
           </p>
           <button 
             onClick={() => window.location.href = '/'}
             className="px-10 py-4 bg-emerald-600 text-white font-black rounded-2xl hover:bg-emerald-700 transition-all shadow-lg"
           >
-            العودة للرئيسية
+            العودة للرئيسة
           </button>
         </motion.div>
       </div>

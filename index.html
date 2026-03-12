@@ -9,13 +9,17 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:wght@400;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:wght@400;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
       :root {
         --font-main: 'Cairo', sans-serif;
         --font-academic: 'Amiri', serif;
         --font-trendy: 'IBM Plex Sans Arabic', sans-serif;
       }
-
+      html {
+        /* direction: ltr; */
+      }
       body {
         font-family: var(--font-main);
         background-color: #ffffff;
@@ -31,6 +35,14 @@
         font-family: var(--font-trendy);
       }
 
+        /* direction: rtl; */
+      }
+      .academic-font {
+        font-family: var(--font-academic);
+      }
+      .trendy-font {
+        font-family: var(--font-trendy);
+      }
       .title-h1 {
         font-family: var(--font-academic);
         font-weight: 900;
@@ -61,6 +73,10 @@
 
       /* Floating animations */
 
+      .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+      
       @keyframes float {
         0% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
@@ -82,6 +98,12 @@
         animation: float-slow 8s ease-in-out infinite;
       }
 
+      .floating-badge {
+        animation: float 4s ease-in-out infinite;
+      }
+      .footer-letter {
+        animation: float-slow 8s ease-in-out infinite;
+      }
       .ltr-text {
         direction: ltr;
         display: inline-block;
@@ -123,5 +145,12 @@
 
     <script type="module" src="/index.tsx"></script>
 
+  </body>
+</html>
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

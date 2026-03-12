@@ -9,7 +9,7 @@ const testimonials = [
   { name: "ليلى حسن", role: "طالبة ماجستير", content: "بنك الكتابة العلمية وفر عليّ الكثير من الوقت في صياغة البحث.", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&h=150&auto=format&fit=crop" },
   { name: "د. محمود إبراهيم", role: "أستاذ النقد الأدبي", content: "دقة في المصطلحات واحترافية في العرض الأكاديمي.", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&h=150&auto=format&fit=crop" },
   { name: "فاطمة الزهراء", role: "مترجمة أكاديمية", content: "أدوات إعادة الصياغة هنا هي الأفضل في المحتوى العربي.", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150&h=150&auto=format&fit=crop" },
-  { name: "د. ياسين القاضي", role: "باحث في اللسانيات الحاسوبية", content: "خطوة جبارة نحو رقمنة التراث اللساني العربي.", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&h=150&auto=format&fit=crop" },
+  { name: "د. ياسين القاضي", role: "باحث في اللسانيات الحاسوبية", content: "خطوة جبارة نحو رقمنة التراث اللساني العربي.",  img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&h=150&auto=format&fit=crop" },
   { name: "أ. خالد الشمري", role: "طالب دراسات عليا", content: "المكتبة اللسانية كنز حقيقي لكل باحث جاد.", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=150&h=150&auto=format&fit=crop" },
   { name: "د. نورة الفايز", role: "أستاذة المناهج", content: "تكامل رائع بين النظرية والتطبيق في خدمة الباحث.", img: "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=150&h=150&auto=format&fit=crop" },
   { name: "عمر الفاروق", role: "كاتب وباحث", content: "واجهة مستخدم مريحة جداً وتدعم التركيز الأكاديمي", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=150&h=150&auto=format&fit=crop" },
@@ -34,6 +34,7 @@ const testimonials = [
   { name: "د. محمد الشهري", role: "أستاذ النحو", content: "تطبيق عملي رائع لقواعد اللغة في سياق أكاديمي.", img: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=150&h=150&auto=format&fit=crop" },
   { name: "فيصل العنزي", role: "طالب ماجستير", content: "المنصة وفرت عليّ عناء البحث في المعاجم الورقية.", img: "https://images.unsplash.com/photo-1513910367299-bce8d8a0ebf6?q=80&w=150&h=150&auto=format&fit=crop" }
 ];
+
 
 const Home: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -124,6 +125,7 @@ const Home: React.FC = () => {
                <div>
                   <h2 className="text-4xl font-black text-slate-900 academic-font mb-2">بوابة التلَقّي المعرفي (القراءة)</h2>
                   <p className="text-lg text-slate-500 font-medium trendy-font">المرحلة الأولى: بناء القاعدة العلمية وجمع المادة اللسانية</p>
+                  <p className="text-lg text-slate-500 font-medium trendy-font">المرحلة الأولى: بناء القاعدة العلمية وجمع المادة اللسانية.</p>
                </div>
             </div>
 
@@ -187,6 +189,7 @@ const Home: React.FC = () => {
                <div>
                   <h2 className="text-4xl font-black text-slate-900 academic-font mb-2">بوابة الإنتاج الأكاديمي (الكتابة)</h2>
                   <p className="text-lg text-slate-500 font-medium trendy-font">المرحلة الثانية: تحويل المعرفة إلى إنتاج علمي رصين ومحكم</p>
+                  <p className="text-lg text-slate-500 font-medium trendy-font">المرحلة الثانية: تحويل المعرفة إلى إنتاج علمي رصين ومحكم.</p>
                </div>
             </div>
 
@@ -216,7 +219,7 @@ const Home: React.FC = () => {
                      </div>
                      <div>
                         <h4 className="text-2xl font-black text-slate-900 academic-font mb-2">مساعد الصياغة الذكي</h4>
-                        <p className="text-[13px] text-slate-500 leading-relaxed trendy-font font-medium">إعادة صياغة المسودات بأسلوب أكاديمي رصين وموضوعي.</p>
+                        <p className="text-[13px] text-slate-500 leading-relaxed trendy-font font-medium">إعادة صياغة المسودات بأسلوب أكاديمي رصين وموضوعي</p>
                      </div>
                   </Link>
 
@@ -226,7 +229,7 @@ const Home: React.FC = () => {
                      </div>
                      <div>
                         <h4 className="text-2xl font-black text-slate-900 academic-font mb-2">ميزان الصياغة الأكاديمية</h4>
-                        <p className="text-[13px] text-slate-500 leading-relaxed trendy-font font-medium">تقييم موضوعية ورسمية النص البحثي واكتشاف مواطن الضعف الأسلوبي.</p>
+                        <p className="text-[13px] text-slate-500 leading-relaxed trendy-font font-medium">تقييم موضوعية ورسمية النص البحثي واكتشاف مواطن الضعف الأسلوبي</p>
                      </div>
                   </Link>
                </div>

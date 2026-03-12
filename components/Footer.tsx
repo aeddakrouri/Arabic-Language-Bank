@@ -59,7 +59,7 @@ const Footer: React.FC<{ lang: 'ar' | 'en' }> = ({ lang }) => {
               <Logo size="lg" />
             </div>
             <p className="text-[13px] leading-relaxed text-slate-400 font-medium academic-font">
-              أول منصة بحثية عربية متكاملة تهدف إلى رقمنة الأدوات اللسانية وتوفير التراكيب الأكاديمية المحكمة لدعم الباحثين في مسيرتهم العلمية.
+              أول منصة بحثية عربية متكاملة تهدف إلى رقمنة الأدوات اللسانية وتوفير العبارات والتراكيب الأكاديمية المحكمة لدعم الباحثين في مسيرتهم العلمية.
             </p>
             <div className="flex gap-4 mt-8">
               {[Twitter, Github, Linkedin, Mail].map((Icon, i) => (

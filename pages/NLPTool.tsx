@@ -26,10 +26,10 @@ const NLPTool: React.FC = () => {
         }
       });
       
-      setAnalysis(response.text || "عذراً، لم نتمكن من تحليل النص لسانياً حالياً.");
+      setAnalysis(response.text || "عذرًا، لم نتمكن من تحليل النص لسانيًا حاليًا.");
     } catch (error) {
       console.error("AI Error:", error);
-      setAnalysis("حدث خطأ أثناء الاتصال بالمحلل اللساني. يرجى المحاولة لاحقاً.");
+      setAnalysis("حدث خطأ أثناء الاتصال بالمحلل اللساني. يرجى المحاولة لاحقًا.");
     } finally {
       setIsProcessing(false);
     }

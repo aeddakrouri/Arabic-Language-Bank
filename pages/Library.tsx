@@ -45,7 +45,7 @@ const Library: React.FC = () => {
       author: 'د. أيمن الدكروري، د. أماني رمضان، د. ليزا موريسن', 
       category: 'مهارات أكاديمية', 
       year: '2026', 
-      cover: 'https://picsum.photos/seed/academic-reading/600/900',
+      cover: 'https://picsum.photos/seed/arabic-ling/600/900',
       description: 'الجزء الأول (من الأدبية إلى العلمية). كتاب منهجي شامل يهدف إلى تطوير مهارات القراءة الاستيعابية والكتابة الأكاديمية الرصينة لطلاب المرحلة الجامعية، مع التركيز على البنى اللغوية السليمة.',
       pages: 146,
       content: {
@@ -68,15 +68,15 @@ const Library: React.FC = () => {
     },
     { 
       id: 4, 
-      title: 'تلاقي الأدب العربي والذكاء الاصطناعي في عالم الكلمة', 
-      author: 'د. أيمن الدكروري', 
+      title: 'الأدب العربي والذكاء الاصطناعي', 
+      author: 'د. أيمن الدكروري، د. أماني رمضان', 
       category: 'لسانيات حاسوبية', 
       year: '2025', 
-      cover: 'https://picsum.photos/seed/ai-literature/600/900',
+      cover: 'https://picsum.photos/seed/arabic-ling/600/900',
       description: 'دراسة رائدة تستكشف آفاق التفاعل بين المنجز الأدبي العربي وتقنيات الذكاء الاصطناعي، وكيف يمكن للآلة أن تساهم في تحليل ونقد وإنتاج النص الأدبي.',
       pages: 280,
       content: {
-        title: 'تلاقي الأدب العربي والذكاء الاصطناعي',
+        title: 'الأدب العربي والذكاء الاصطناعي',
         pages: [
           'مقدمة: عصر الكلمة الرقمية',
           'الفصل الأول: الذكاء الاصطناعي وفلسفة اللغة',
@@ -92,7 +92,7 @@ const Library: React.FC = () => {
       author: 'د. محمد رشاد الحمزاوي', 
       category: 'معاجم', 
       year: '2018', 
-      cover: 'https://picsum.photos/seed/dictionary-cover/600/900',
+      cover: 'https://picsum.photos/seed/arabic-ling/600/900',
       description: 'معجم متخصص يجمع أهم المصطلحات اللسانية الحديثة مع شرح دقيق لمفاهيمها وتطورها في الفكر اللساني المعاصر، ويعد مرجعاً أساسياً للباحثين في علوم اللغة.',
       pages: 215,
       content: {
@@ -227,7 +227,7 @@ const Library: React.FC = () => {
                   </div>
                   <h1 className="text-5xl md:text-7xl font-black academic-font mb-6 leading-tight text-emerald-950">المكتبة اللسانية</h1>
                   <p className="text-emerald-900/70 text-lg leading-relaxed academic-font italic">
-                    بوابة رقمية مخصصة لأمهات الكتب والدراسات اللسانية المعاصرة، تهدف لتمكين الباحث العربي من الوصول إلى أدوات المعرفة الرصينة.
+                    بوابة رقمية مخصصة لأمهات الكتب والدراسات اللسانية المعاصرة، تهدف لتمكين الباحث العربي من الوصول إلى أدوات المعرفة الرصينة
                   </p>
                </div>
                <div className="w-full max-w-md">
