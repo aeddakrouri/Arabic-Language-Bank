@@ -84,6 +84,94 @@ const WritingBank: React.FC = () => {
 
   const currentSubCategories = subCategoriesByStep[activeStep] || [];
 
+  // 1. مراقبة تغيير المرحلة لتحديث القسم النشط تلقائياً
+  useEffect(() => {
+    const subCats = subCategoriesByStep[activeStep] || [];
+    if (subCats.length > 0) {
+      setActiveCategory(subCats[0]);
+    }
+  }, [activeStep]);
+
+  // 2. جلب البيانات من Supabase مع ميزة الدمج الذكي (Fallback)
+  useEffect(() => {
+    const fetchPhrases = async () => {
+      setIsLoadingPhrases(true);
+      try {
+        const { data, error } = await supabase
+          .from('phrases')
+          .select('*');
+        
+        if (error || !data || data.length === 0) {
+          console.warn('تنبيه: سيتم استخدام نصوص البنك المحلية');
+          setPhrases(initialPhrases);
+          return;
+        }
+        
+        const mergedPhrases = [...initialPhrases];
+        data.forEach((dbPhrase: any) => {
+          const index = mergedPhrases.findIndex(p => p.id === dbPhrase.id);
+          if (index !== -1) {
+            mergedPhrases[index] = dbPhrase;
+          } else {
+            mergedPhrases.push(dbPhrase);
+          }
+        });
+        setPhrases(mergedPhrases);
+
+      } catch (error) {
+        console.error('Error fetching phrases:', error);
+        setPhrases(initialPhrases);
+      } finally {
+        setIsLoadingPhrases(false);
+      }
+    };
+
+    fetchPhrases();
+  }, []);
+
+  // 3. مراقبة تقدم التمرير (Scroll Progress)
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // 4. دالة معالجة النصوص عبر الذكاء الاصطناعي (Gemini)
+  const handleAiAction = async (mode: 'analyze' | 'paraphrase' | 'audit', text: string) => {
+    if (!text.trim()) {
+      alert("يرجى إدخال نص في مختبر التجميع أولاً");
+      return;
+    }
+    
+    setIsLoadingPhrases(true); 
+    try {
+      const response = await fetch('/.netlify/functions/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode, text })
+      });
+
+      const data = await response.json();
+      
+      if (data.result) {
+        setAssemblyText(data.result);
+        alert("تمت المعالجة بنجاح! تفقد النتيجة في مختبر التجميع.");
+      } else {
+        alert("حدث خطأ: " + (data.error || "خطأ في استجابة الخادم"));
+      }
+    } catch (error) {
+      console.error("AI Error:", error);
+      alert("فشل الاتصال بخدمة الذكاء الاصطناعي");
+    } finally {
+      setIsLoadingPhrases(false);
+    }
+  };
+
   const categoryData: Record<string, {
     title: string;
     intro: string;
@@ -868,26 +956,32 @@ const WritingBank: React.FC = () => {
     const fetchPhrases = async () => {
       setIsLoadingPhrases(true);
       try {
+        // محاولة جلب البيانات
         const { data, error } = await supabase
           .from('phrases')
           .select('*');
         
-        if (error) throw error;
-        
-        // Merge Supabase data with initialPhrases, prioritizing Supabase data for same IDs
-        const mergedPhrases = [...initialPhrases];
-        if (data && data.length > 0) {
-          data.forEach((dbPhrase: any) => {
-            const index = mergedPhrases.findIndex(p => p.id === dbPhrase.id);
-            if (index !== -1) {
-              mergedPhrases[index] = dbPhrase;
-            } else {
-              mergedPhrases.push(dbPhrase);
-            }
-          });
+        // إذا حدث خطأ في الجدول أو لم تكن هناك بيانات
+        if (error || !data || data.length === 0) {
+          console.warn('تنبيه: سيتم استخدام نصوص البنك المحلية لعدم توفر جدول phrases');
+          setPhrases(initialPhrases);
+          return;
         }
+        
+        // إذا وُجدت بيانات في Supabase، نقوم بدمجها مع نصوصك الأصلية
+        const mergedPhrases = [...initialPhrases];
+        data.forEach((dbPhrase: any) => {
+          const index = mergedPhrases.findIndex(p => p.id === dbPhrase.id);
+          if (index !== -1) {
+            mergedPhrases[index] = dbPhrase;
+          } else {
+            mergedPhrases.push(dbPhrase);
+          }
+        });
         setPhrases(mergedPhrases);
+
       } catch (error) {
+        // في حال انقطاع الإنترنت أو أي خطأ مفاجئ، الموقع لن يتوقف
         console.error('Error fetching phrases:', error);
         setPhrases(initialPhrases);
       } finally {
@@ -898,6 +992,7 @@ const WritingBank: React.FC = () => {
     fetchPhrases();
   }, []);
 
+// 1. مراقبة السكرول (هذا هو الـ useEffect الثالث الصحيح في كودك)
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -908,7 +1003,6 @@ const WritingBank: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Scroll Progress Bar */}
@@ -1083,25 +1177,54 @@ const WritingBank: React.FC = () => {
                      onChange={(e) => setAssemblyText(e.target.value)}
                   ></textarea>
 
-                  <div className="mt-6 flex items-center justify-between">
-                     <div className="flex items-center gap-2">
+                  <div className="mt-6 flex flex-col gap-4">
+                    {/* أزرار الذكاء الاصطناعي - صف أول */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <button 
+                        onClick={() => handleAiAction('paraphrase', assemblyText)}
+                        disabled={isLoadingPhrases}
+                        className="flex items-center justify-center gap-2 py-3 bg-white/10 text-white text-[10px] font-black rounded-xl hover:bg-white/20 transition-all border border-white/10 disabled:opacity-50"
+                      >
+                        <Sparkles size={14} className="text-emerald-400" />
+                        {isLoadingPhrases ? 'جاري...' : 'إعادة صياغة'}
+                      </button>
+                      
+                      <button 
+                        onClick={() => handleAiAction('analyze', assemblyText)}
+                        disabled={isLoadingPhrases}
+                        className="flex items-center justify-center gap-2 py-3 bg-white/10 text-white text-[10px] font-black rounded-xl hover:bg-white/20 transition-all border border-white/10 disabled:opacity-50"
+                      >
+                        <BrainCircuit size={14} className="text-blue-400" />
+                        {isLoadingPhrases ? 'جاري...' : 'تحليل ذكي'}
+                      </button>
+                    </div>
+
+                    {/* صف التحكم - نسخ وتدقيق */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
                         <button 
-                           onClick={() => {
-                              navigator.clipboard.writeText(assemblyText);
-                              // Optional: add success feedback
-                           }}
-                           className="px-6 py-3 bg-emerald-600 text-white text-xs font-black rounded-xl hover:bg-emerald-500 transition-all shadow-lg"
+                          onClick={() => {
+                            navigator.clipboard.writeText(assemblyText);
+                            alert('تم نسخ النص بنجاح');
+                          }}
+                          className="px-6 py-3 bg-emerald-600 text-white text-xs font-black rounded-xl hover:bg-emerald-500 transition-all shadow-lg"
                         >
-                           نسخ النص
+                          نسخ النص
                         </button>
-                        <button className="p-3 bg-white/10 text-white rounded-xl hover:bg-white/20 transition-all shadow-lg" title="إرسال المسودة">
-                           <Send size={16} />
+                        
+                        <button 
+                          onClick={() => handleAiAction('audit', assemblyText)}
+                          disabled={isLoadingPhrases}
+                          className="p-3 bg-white/10 text-white rounded-xl hover:bg-white/20 transition-all border border-white/10 disabled:opacity-50"
+                          title="تدقيق لغوي"
+                        >
+                          <Microscope size={16} />
                         </button>
-                     </div>
-                     <p className="text-[10px] text-blue-200/50 font-bold academic-font">حفظ تلقائي للمسودة</p>
+                      </div>
+                      <p className="text-[9px] text-blue-200/50 font-bold academic-font italic leading-none">مدعوم بـ Gemini AI</p>
+                    </div>
                   </div>
-               </div>
-            </div>
+                </div> {/* قفلة المربع الأخضر - Assembly Lab */}
 
             {/* Left Content Area */}
             <div className="lg:col-span-8 space-y-8">
@@ -1248,37 +1371,40 @@ const WritingBank: React.FC = () => {
 
       {/* Footer Features */}
       <section className="py-20 bg-white border-t border-slate-100">
-         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="flex items-start gap-6 text-right">
-               <div className="flex-grow">
-                  <h4 className="text-xl font-black mb-3 academic-font">ذكاء اصطناعي لغوي</h4>
-                  <p className="text-slate-500 text-sm leading-relaxed academic-font">نستخدم تقنيات معالجة اللغات الطبيعية لاختيار أدق التراكيب التي تناسب سياق بحثك العلمي.</p>
-               </div>
-               <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center shrink-0">
-                  <BrainCircuit size={32} />
-               </div>
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="flex items-start gap-6 text-right">
+            <div className="flex-grow">
+              <h4 className="text-xl font-black mb-3 academic-font">ذكاء اصطناعي لغوي</h4>
+              <p className="text-slate-500 text-sm leading-relaxed academic-font">نستخدم تقنيات معالجة اللغات الطبيعية لاختيار أدق التراكيب التي تناسب سياق بحثك العلمي.</p>
             </div>
-            <div className="flex items-start gap-6 text-right">
-               <div className="flex-grow">
-                  <h4 className="text-xl font-black mb-3 academic-font">معايير عالمية</h4>
-                  <p className="text-slate-500 text-sm leading-relaxed academic-font">جميع التراكيب مستوحاة من أبحاث منشورة في مجلات علمية مرموقة لضمان أعلى مستويات الرصانة.</p>
-               </div>
-               <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center shrink-0">
-                  <CheckCircle2 size={32} />
-               </div>
+            <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center shrink-0">
+              <BrainCircuit size={32} />
             </div>
-            <div className="flex items-start gap-6 text-right">
-               <div className="flex-grow">
-                  <h4 className="text-xl font-black mb-3 academic-font">مختبر التجميع الذكي</h4>
-                  <p className="text-slate-500 text-sm leading-relaxed academic-font">أداة تفاعلية تتيح لك بناء فقراتك الأكاديمية عبر تجميع التراكيب المختارة بذكاء وسلاسة.</p>
-               </div>
-               <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center shrink-0">
-                  <Sparkles size={32} />
-               </div>
+          </div>
+          <div className="flex items-start gap-6 text-right">
+            <div className="flex-grow">
+              <h4 className="text-xl font-black mb-3 academic-font">معايير عالمية</h4>
+              <p className="text-slate-500 text-sm leading-relaxed academic-font">جميع التراكيب مستوحاة من أبحاث منشورة في مجلات علمية مرموقة لضمان أعلى مستويات الرصانة.</p>
             </div>
-         </div>
+            <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center shrink-0">
+              <CheckCircle2 size={32} />
+            </div>
+          </div>
+          <div className="flex items-start gap-6 text-right">
+            <div className="flex-grow">
+              <h4 className="text-xl font-black mb-3 academic-font">مختبر التجميع الذكي</h4>
+              <p className="text-slate-500 text-sm leading-relaxed academic-font">أداة تفاعلية تتيح لك بناء فقراتك الأكاديمية عبر تجميع التراكيب المختارة بذكاء وسلاسة.</p>
+            </div>
+            <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center shrink-0">
+              <Sparkles size={32} />
+            </div>
+          </div>
+        </div>
       </section>
-    </div>
+
+      {/* الأقواس اللي كانت ناقصة ومسببة المشكلة */}
+    </div> // قفلة الـ Main Content Area
+  </div> // قفلة الـ flex flex-col الرئيسية
   );
 };
 

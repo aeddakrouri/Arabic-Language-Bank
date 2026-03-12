@@ -59,7 +59,7 @@ const About: React.FC = () => {
                <div className="w-1.5 h-12 bg-emerald-600 rounded-full" />
             </div>
             <p className="text-xl text-slate-600 leading-[2] academic-font mb-12">
-              في عالم متسارع، يحتاج الباحث العربي إلى ما هو أكثر من مجرد "محرك بحث". نحن هنا لنكون **بوصلة إجرائية**؛ نوفر له الرف العلمي الرصين عبر مكتبتنا، ونمنحه الريشة الأكاديمية البليغة عبر بنك الكتابة، مدعوماً بذكاء اصطناعي يفهم خصوصية لغتنا العربية.
+              في عالم متسارع، يحتاج الباحث العربي إلى ما هو أكثر من مجرد "محرك بحث". نحن هنا لنكون بوصلة إجرائية؛ نوفر له الرف العلمي الرصين عبر مكتبتنا، ونمنحه الريشة الأكاديمية البليغة عبر بنك الكتابة، مدعوماً بذكاء اصطناعي يفهم خصوصية لغتنا العربية.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -104,11 +104,11 @@ const About: React.FC = () => {
                      <h3 className="text-3xl font-black academic-font">أولاً: بوابة الاستقبال المعرفي</h3>
                   </div>
                   <p className="text-emerald-100/70 text-lg leading-relaxed academic-font mb-10">
-                    تبدأ رحلة الباحث بالقراءة والتحليل. هنا تبرز **المكتبة اللسانية** كحجر أساس، تدعمها أدوات **المحلل اللساني** و **مهندس الاستشهادات** لضمان استيعاب رصين وتوثيق أمين.
+                    تبدأ رحلة الباحث بالقراءة والتحليل. هنا تبرز المكتبة اللسانية بصفتها حجر أساس، تدعمها أدوات المحلل اللساني ومهندس الاستشهادات لضمان استيعاب رصين وتوثيق أمين.
                   </p>
                   <div className="space-y-4">
                      <div className="flex items-center gap-3 justify-end text-emerald-400 font-bold academic-font">
-                        <span>فحص النصوص لسانياً</span>
+                        <span>فحص النصوص لسانيًا</span>
                         <FileCheck size={18} />
                      </div>
                      <div className="flex items-center gap-3 justify-end text-emerald-400 font-bold academic-font">
@@ -124,14 +124,14 @@ const About: React.FC = () => {
                      <div className="w-16 h-16 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                         <PenTool size={32} />
                      </div>
-                     <h3 className="text-3xl font-black academic-font">ثانياً: بوابة الإنتاج الأكاديمي</h3>
+                     <h3 className="text-3xl font-black academic-font">ثانيًا: بوابة الإنتاج الأكاديمي</h3>
                   </div>
                   <p className="text-emerald-100/70 text-lg leading-relaxed academic-font mb-10">
-                    بعد النضج المعرفي تأتي مرحلة الكتابة. يتصدر **بنك الكتابة العلمية** هذه المرحلة؛ وهو دليل لغوي بحثي يقدم نماذج واقعية للكتابة الأكاديمية العربية، مستخلصة من مدونات لغوية (Corpus Linguistics) ومبنية على ما يكتبه الباحثون فعليًا، لا نصوص مولّدة اصطناعيًا.
+                    بعد النضج المعرفي تأتي مرحلة الكتابة. يتصدر "بنك الكتابة العلمية" هذه المرحلة؛ وهو دليل لغوي بحثي يقدم نماذج واقعية للكتابة الأكاديمية العربية، مستخلصة من مدونات لغوية (Corpus Linguistics) ومبنية على ما يكتبه الباحثون فعليًا، لا نصوص مولّدة اصطناعيًا.
                   </p>
                   <div className="space-y-4">
                      <div className="flex items-center gap-3 justify-end text-blue-400 font-bold academic-font">
-                        <span>وزن الصياغة موضوعياً</span>
+                        <span>وزن الصياغة موضوعيًا</span>
                         <Target size={18} />
                      </div>
                      <div className="flex items-center gap-3 justify-end text-blue-400 font-bold academic-font">
@@ -286,7 +286,7 @@ const About: React.FC = () => {
             <div className="relative z-10">
                <h2 className="text-4xl md:text-6xl font-black mb-8 academic-font">ساهم في إثراء المحتوى اللساني العربي</h2>
                <p className="text-emerald-100/60 text-xl md:text-2xl max-w-4xl ml-auto academic-font leading-relaxed mb-16">
-                  سواء كنت مؤلفاً تود إتاحة كتابك، أو باحثاً تود مشاركة خبراتك، أبواب المنصة مفتوحة لكل المخلصين للغة العربية والبحث العلمي.
+                  سواء كنت مؤلفًا تود إتاحة كتابك، أو باحثًا تود مشاركة خبراتك، أبواب المنصة مفتوحة لكل المخلصين للغة العربية والبحث العلمي.
                </p>
 
                <div className="flex flex-col md:flex-row items-center justify-end gap-6">

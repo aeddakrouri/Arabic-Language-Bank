@@ -125,7 +125,7 @@ const Home: React.FC = () => {
                <div>
                   <h2 className="text-4xl font-black text-slate-900 academic-font mb-2">بوابة التلَقّي المعرفي (القراءة)</h2>
                   <p className="text-lg text-slate-500 font-medium trendy-font">المرحلة الأولى: بناء القاعدة العلمية وجمع المادة اللسانية</p>
-                  <p className="text-lg text-slate-500 font-medium trendy-font">المرحلة الأولى: بناء القاعدة العلمية وجمع المادة اللسانية.</p>
+                 
                </div>
             </div>
 
@@ -189,7 +189,7 @@ const Home: React.FC = () => {
                <div>
                   <h2 className="text-4xl font-black text-slate-900 academic-font mb-2">بوابة الإنتاج الأكاديمي (الكتابة)</h2>
                   <p className="text-lg text-slate-500 font-medium trendy-font">المرحلة الثانية: تحويل المعرفة إلى إنتاج علمي رصين ومحكم</p>
-                  <p className="text-lg text-slate-500 font-medium trendy-font">المرحلة الثانية: تحويل المعرفة إلى إنتاج علمي رصين ومحكم.</p>
+                 
                </div>
             </div>
 
