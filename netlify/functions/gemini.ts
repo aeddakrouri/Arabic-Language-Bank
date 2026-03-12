@@ -1,56 +1,35 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export const handler = async (event: any) => {
-  // السماح بطلبات POST فقط
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: "Method Not Allowed" })
-    };
+export const handler = async (event) => {
+  // السماح بطلبات الـ CORS
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 200, headers: { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Content-Type" }, body: "" };
   }
 
   try {
-    const { mode, text } = JSON.parse(event.body);
-    
-    // في Netlify Functions نستخدم process.env
     const apiKey = process.env.GEMINI_API_KEY;
-
-    if (!apiKey) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Gemini API key is not configured in Netlify" })
-      };
-    }
+    if (!apiKey) throw new Error("API Key is missing in environment variables");
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.0-flash",
-      systemInstruction: "أنت خبير في اللغة العربية واللسانيات الأكاديمية."
-    });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    let prompt = "";
-    if (mode === "analyze") {
-      prompt = `قم بإجراء تحليل لساني معمق للنص العربي التالي: "${text}"`;
-    } else if (mode === "paraphrase") {
-      prompt = `أعد صياغة النص التالي بأسلوب أكاديمي: "${text}"`;
-    } else if (mode === "audit") {
-      prompt = `قم بتقييم جودة الصياغة الأكاديمية للنص التالي: "${text}"`;
-    }
+    const { prompt } = JSON.parse(event.body || "{}");
+    if (!prompt) throw new Error("Prompt is required");
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
+    const text = response.text();
 
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ result: response.text() })
+      headers: { "Access-Control-Allow-Origin": "*", "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
     };
-
-  } catch (error: any) {
-    console.error(error);
+  } catch (error) {
+    console.error("Function Error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "AI processing failed", details: error.message })
+      body: JSON.stringify({ error: error.message }),
     };
   }
 };
