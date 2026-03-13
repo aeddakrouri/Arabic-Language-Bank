@@ -178,5 +178,6 @@ const NLPTool: React.FC = () => {
     </div>
   );
 }; 
+// debug
 
 export default NLPTool;
