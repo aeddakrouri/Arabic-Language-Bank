@@ -177,6 +177,6 @@ const NLPTool: React.FC = () => {
 
     </div>
   );
-};
+}; 
 
 export default NLPTool;
