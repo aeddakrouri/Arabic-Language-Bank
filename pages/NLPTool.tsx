@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Microscope, RotateCcw, ShieldCheck, Brain, FileText, Languages } from 'lucide-react';
+import { Sparkles, Microscope, RotateCcw, Brain, FileText, Languages } from 'lucide-react';
 
 const NLPTool: React.FC = () => {
   const [inputText, setInputText] = useState('');
@@ -10,28 +10,28 @@ const NLPTool: React.FC = () => {
   const handleAnalyze = async () => {
     if (!inputText.trim()) return;
     setIsProcessing(true);
+    setAnalysis(null);
 
     try {
-      // اتصال مباشر بجوجل
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`;
-      const response = await fetch(url, {
+      // التعديل الجوهري: نكلم السيرفر بتاعنا في Vercel بدلاً من جوجل مباشرة
+      const response = await fetch('/api/gemini', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: `قم بإجراء تحليل لساني معمق للنص التالي (صرفي، تركيبي، دلالي): ${inputText}` }] }]
+          prompt: `بصفتك خبيراً لسانياً، قدم تحليلاً لسانياً (صرفياً، وتركيبياً، ودلالياً) للنص العربي التالي:\n\n${inputText}`
         })
       });
 
       const data = await response.json();
-      if (data.candidates && data.candidates[0].content.parts[0].text) {
-        setAnalysis(data.candidates[0].content.parts[0].text);
+
+      if (response.ok && data.text) {
+        setAnalysis(data.text);
       } else {
-        setAnalysis("لم يتمكن المحلل اللساني من معالجة النص.");
+        throw new Error(data.error || "فشل في استلام التحليل");
       }
-    } catch (error) {
-      console.error(error);
-      setAnalysis("حدث خطأ في الاتصال المباشر بالمحرك.");
+    } catch (error: any) {
+      console.error("Analysis Error:", error);
+      setAnalysis(`عذراً، حدث خطأ: ${error.message}. تأكد من إعدادات Vercel API Key.`);
     } finally {
       setIsProcessing(false);
     }
@@ -39,46 +39,48 @@ const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:gene
 
   return (
     <div className="min-h-screen bg-white text-right" dir="rtl">
-      {/* الـ Header وباقي الـ JSX يظل كما هو دون تغيير */}
-      <section className="relative pt-20 pb-32 overflow-hidden">
+      {/* الجزء العلوي */}
+      <section className="relative pt-20 pb-32 overflow-hidden bg-blue-50/50">
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-blue-50 text-blue-700 text-[10px] font-black mb-6 border border-blue-100">
+          <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-black mb-6">
             <Sparkles size={14} />
-            <span>المختبر اللساني الذكي (NLP Engine)</span>
+            <span>المختبر اللساني الذكي - نسخة Vercel النهائية</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight text-blue-950">المحلل اللساني المعمق</h1>
-          <p className="text-slate-500 max-w-2xl text-lg leading-relaxed">أداة أكاديمية للتحليل الصرفي والتركيبي للنصوص العربية.</p>
+          <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight text-blue-950">المحلل اللساني</h1>
         </div>
       </section>
 
+      {/* منطقة العمل */}
       <section className="py-20 max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="space-y-6">
-            <h3 className="text-xl font-black flex items-center gap-3"><FileText size={18} /> النص المراد تحليله</h3>
+            <h3 className="text-xl font-black flex items-center gap-3"><FileText size={18} /> النص للتحليل</h3>
             <textarea
-              className="w-full h-[450px] p-10 bg-slate-50 border-2 border-slate-100 rounded-[3rem] text-xl focus:outline-none resize-none"
-              placeholder="أدخل النص للتحليل اللساني..."
+              className="w-full h-[400px] p-8 bg-slate-50 border-2 border-slate-100 rounded-[2.5rem] text-xl focus:border-blue-300 outline-none resize-none"
+              placeholder="ضع النص هنا..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
             />
             <button
               onClick={handleAnalyze}
               disabled={isProcessing || !inputText.trim()}
-              className="w-full py-6 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-3xl flex items-center justify-center gap-4 disabled:opacity-50"
+              className="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl flex items-center justify-center gap-4 transition-all"
             >
-              {isProcessing ? <><RotateCcw className="animate-spin" size={24} /> جاري التحليل...</> : <><Microscope size={24} /> بدء التحليل</>}
+              {isProcessing ? <><RotateCcw className="animate-spin" size={24} /> جاري الفحص والتحليل...</> : <><Microscope size={24} /> ابدأ التحليل اللساني</>}
             </button>
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-xl font-black flex items-center gap-3"><Languages size={18} className="text-blue-600" /> نتائج التحليل</h3>
-            <div className="w-full h-[450px] p-10 bg-white border-2 border-slate-100 rounded-[3rem] text-lg overflow-y-auto">
+            <h3 className="text-xl font-black flex items-center gap-3"><Languages size={18} className="text-blue-600" /> النتائج</h3>
+            <div className="w-full h-[400px] p-8 bg-white border-2 border-slate-100 rounded-[2.5rem] overflow-y-auto shadow-sm">
               {analysis ? (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="leading-relaxed text-slate-700 whitespace-pre-wrap">{analysis}</motion.div>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="leading-relaxed text-slate-700 whitespace-pre-wrap">
+                  {analysis}
+                </motion.div>
               ) : (
-                <div className="h-full flex flex-col items-center justify-center text-slate-300 gap-6">
-                  <Brain size={60} />
-                  <p className="text-lg font-bold">بانتظار النص للتحليل...</p>
+                <div className="h-full flex flex-col items-center justify-center text-slate-300">
+                  <Brain size={50} />
+                  <p className="mt-4 font-bold">بانتظار التحليل...</p>
                 </div>
               )}
             </div>
@@ -88,4 +90,5 @@ const url = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:gene
     </div>
   );
 };
+
 export default NLPTool;
